@@ -3,7 +3,7 @@ package registrodepresenca.demo.classes;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "USUARIO")
+@Table(name = "\"USUARIO\"")
 public class Usuario{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

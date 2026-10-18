@@ -5,7 +5,7 @@ import java.time.OffsetDateTime;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "PRESENCA")
+@Table(name = "\"PRESENCA\"")
 public class Presenca{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
