@@ -1,10 +1,12 @@
-import java.time.localdate;
+package registrodepresenca.demo.classes;
+
+import java.time.LocalDate;
 
 public class Aluno{
     public int matricula_aluno;
     public int id_turma;
     public String nome_aluno;
     public String codrfid ;
-    public localdate horaentrada;
-    public localdate horasaida;
+    public LocalDate horaentrada;
+    public LocalDate horasaida;
 }

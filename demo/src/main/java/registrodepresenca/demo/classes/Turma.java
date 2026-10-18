@@ -1,3 +1,5 @@
+package registrodepresenca.demo.classes;
+
 public class Turma{
     public int id_turma;
     public String nome;

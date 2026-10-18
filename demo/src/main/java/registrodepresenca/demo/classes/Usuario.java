@@ -1,3 +1,5 @@
+package registrodepresenca.demo.classes;
+
 public class Usuario{
     public int id_usuario;
     public String nome;
