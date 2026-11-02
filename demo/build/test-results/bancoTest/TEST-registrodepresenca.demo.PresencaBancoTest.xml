@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="registrodepresenca.demo.PresencaBancoTest" tests="7" skipped="0" failures="0" errors="0" timestamp="2026-11-02T07:52:37.663Z" hostname="Jambroba" time="17.119">
+  <properties/>
+  <testcase name="cartaoBloqueadoNaoGrava()" classname="registrodepresenca.demo.PresencaBancoTest" time="1.821"/>
+  <testcase name="novoDiaReiniciaEntrada()" classname="registrodepresenca.demo.PresencaBancoTest" time="1.755"/>
+  <testcase name="terceiraLeituraMantemSaida()" classname="registrodepresenca.demo.PresencaBancoTest" time="2.208"/>
+  <testcase name="uidVazio()" classname="registrodepresenca.demo.PresencaBancoTest" time="0.003"/>
+  <testcase name="segundaLeituraGravaSaida()" classname="registrodepresenca.demo.PresencaBancoTest" time="2.206"/>
+  <testcase name="primeiraLeituraGravaEntrada()" classname="registrodepresenca.demo.PresencaBancoTest" time="1.743"/>
+  <testcase name="cartaoDesconhecido()" classname="registrodepresenca.demo.PresencaBancoTest" time="0.23"/>
+  <system-out><![CDATA[04:52:37.858 [Test worker] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [registrodepresenca.demo.PresencaBancoTest]: PresencaBancoTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+04:52:37.955 [Test worker] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration registrodepresenca.demo.DemoApplication for test class registrodepresenca.demo.PresencaBancoTest
+04:52:38.022 [Test worker] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [registrodepresenca.demo.PresencaBancoTest]: PresencaBancoTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+04:52:38.024 [Test worker] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration registrodepresenca.demo.DemoApplication for test class registrodepresenca.demo.PresencaBancoTest
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v4.1.1)
+
+2026-11-02T04:52:38.416-03:00  INFO 168197 --- [demo] [    Test worker] r.demo.PresencaBancoTest                 : Starting PresencaBancoTest using Java 21.0.13 with PID 168197 (started by _jambrolhas in /home/_jambrolhas/Downloads/Registro-de-presenca-main/demo)
+2026-11-02T04:52:38.419-03:00  INFO 168197 --- [demo] [    Test worker] r.demo.PresencaBancoTest                 : The following 1 profile is active: "banco"
+2026-11-02T04:52:39.276-03:00  INFO 168197 --- [demo] [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-11-02T04:52:39.320-03:00  INFO 168197 --- [demo] [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 37 ms. Found 5 JPA repository interfaces.
+2026-11-02T04:52:39.706-03:00  INFO 168197 --- [demo] [    Test worker] org.hibernate.orm.jpa                    : HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-11-02T04:52:39.740-03:00  INFO 168197 --- [demo] [    Test worker] org.hibernate.orm.core                   : HHH000001: Hibernate ORM core version 7.4.5.Final
+2026-11-02T04:52:40.044-03:00  INFO 168197 --- [demo] [    Test worker] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-11-02T04:52:40.067-03:00  INFO 168197 --- [demo] [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-11-02T04:52:41.579-03:00  INFO 168197 --- [demo] [    Test worker] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@1238a074
+2026-11-02T04:52:41.581-03:00  INFO 168197 --- [demo] [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-11-02T04:52:42.343-03:00  INFO 168197 --- [demo] [    Test worker] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [jdbc:postgresql://aws-1-ca-central-1.pooler.supabase.com:5432/postgres?sslmode=require]
+	Database driver: PostgreSQL JDBC Driver
+	Database dialect: PostgreSQLDialect
+	Database version: 17.11
+	Default catalog/schema: postgres/public
+	Autocommit mode: undefined/unknown
+	Isolation level: READ_COMMITTED [default READ_COMMITTED]
+	JDBC fetch size: none
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-11-02T04:52:42.935-03:00  INFO 168197 --- [demo] [    Test worker] org.hibernate.orm.core                   : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-11-02T04:52:43.445-03:00  INFO 168197 --- [demo] [    Test worker] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-11-02T04:52:43.491-03:00  INFO 168197 --- [demo] [    Test worker] o.s.d.j.r.query.QueryEnhancerFactories   : Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-11-02T04:52:44.318-03:00  WARN 168197 --- [demo] [    Test worker] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-11-02T04:52:44.795-03:00  INFO 168197 --- [demo] [    Test worker] r.demo.PresencaBancoTest                 : Started PresencaBancoTest in 6.7 seconds (process running for 8.119)
+2026-11-02T04:52:44.798-03:00  WARN 168197 --- [demo] [    Test worker] o.s.core.events.SpringDocAppInitializer  : SpringDoc /v3/api-docs endpoint is enabled by default. To disable it in production, set the property 'springdoc.api-docs.enabled=false'
+2026-11-02T04:52:44.798-03:00  WARN 168197 --- [demo] [    Test worker] o.s.core.events.SpringDocAppInitializer  : SpringDoc /swagger-ui.html endpoint is enabled by default. To disable it in production, set the property 'springdoc.swagger-ui.enabled=false'
+Registro de teste: matrícula=1342998563, UID=6daa053396c54ca8ba3573fb98bdbd62, cartão=BLOQUEADO
+Registro de teste: matrícula=1118760534, UID=9ced3079005b455187ea460e4ebce174, cartão=ATIVO
+Registro de teste: matrícula=1401737479, UID=dc6f2b86bfbf4a6c98f33b47adb6fc6c, cartão=ATIVO
+Registro de teste: matrícula=1085732281, UID=c1ae7552433b4fa78640e6a3f9e60201, cartão=ATIVO
+Registro de teste: matrícula=1567952843, UID=262bf7d6e88547418f48b20a5e975669, cartão=ATIVO
+]]></system-out>
+  <system-err><![CDATA[Mockito is currently self-attaching to enable the inline-mock-maker. This will no longer work in future releases of the JDK. Please add Mockito as an agent to your build as described in Mockito's documentation: https://javadoc.io/doc/org.mockito/mockito-core/latest/org.mockito/org/mockito/Mockito.html#0.3
+WARNING: A Java agent has been loaded dynamically (/home/_jambrolhas/.gradle/caches/modules-2/files-2.1/net.bytebuddy/byte-buddy-agent/1.18.11/82212e5b3633e7a65fca8bec525762cfb6c9bae4/byte-buddy-agent-1.18.11.jar)
+WARNING: If a serviceability tool is in use, please run with -XX:+EnableDynamicAgentLoading to hide this warning
+WARNING: If a serviceability tool is not in use, please run with -Djdk.instrument.traceUsage for more information
+WARNING: Dynamic loading of agents will be disallowed by default in a future release
+]]></system-err>
+</testsuite>

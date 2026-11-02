@@ -27,8 +27,48 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-validation-test'
 	testImplementation 'org.springframework.boot:spring-boot-starter-webmvc-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+	testRuntimeOnly 'com.h2database:h2'
 }
 
 tasks.named('test') {
 	useJUnitPlatform()
+}
+
+sourceSets {
+    bancoTest {
+        compileClasspath += sourceSets.main.output
+        runtimeClasspath += sourceSets.main.output
+    }
+}
+
+configurations {
+    bancoTestImplementation.extendsFrom testImplementation
+    bancoTestRuntimeOnly.extendsFrom runtimeOnly
+}
+
+tasks.register('bancoTest', Test) {
+    group = 'bancotestes'
+    description = 'Testa as regras no Supabase e mantém os registros para consulta.'
+    testClassesDirs = sourceSets.bancoTest.output.classesDirs
+    classpath = sourceSets.bancoTest.runtimeClasspath
+    useJUnitPlatform()
+    outputs.upToDateWhen { false }
+    testLogging {
+        events 'passed', 'skipped', 'failed'
+        showStandardStreams = true
+    }
+}
+
+tasks.register('prepararDadosTeste', JavaExec) {
+    group = 'bancotestes'
+    description = 'Cria exemplos identificados como TESTE no Supabase.'
+    classpath = sourceSets.bancoTest.runtimeClasspath
+    mainClass = 'registrodepresenca.demo.DadosTesteBanco'
+    javaLauncher = javaToolchains.launcherFor {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+dependencies {
+    bancoTestRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }

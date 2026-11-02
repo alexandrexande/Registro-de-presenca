@@ -1,0 +1,37 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Testar regras no Supabase (dados mantidos)",
+      "type": "process",
+      "command": "/usr/bin/bash",
+      "args": [
+        "./gradlew",
+        "bancoTest"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}",
+        "env": {
+          "JAVA_HOME": "/home/_jambrolhas/.local/share/jdks/temurin-21"
+        }
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Criar exemplos no Supabase (permanentes)",
+      "type": "process",
+      "command": "/usr/bin/bash",
+      "args": [
+        "./gradlew",
+        "prepararDadosTeste"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}",
+        "env": {
+          "JAVA_HOME": "/home/_jambrolhas/.local/share/jdks/temurin-21"
+        }
+      },
+      "problemMatcher": []
+    }
+  ]
+}

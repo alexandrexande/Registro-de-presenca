@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="registrodepresenca.demo.repository.CartaoRepositoryTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2026-11-02T07:37:43.860Z" hostname="Jambroba" time="0.161">
+  <properties/>
+  <testcase name="deveBuscarCartaoPorUid()" classname="registrodepresenca.demo.repository.CartaoRepositoryTest" time="0.151"/>
+  <system-out><![CDATA[2026-11-02T04:37:43.862-03:00  INFO 162536 --- [demo] [    Test worker] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [registrodepresenca.demo.repository.CartaoRepositoryTest]: CartaoRepositoryTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-11-02T04:37:43.866-03:00  INFO 162536 --- [demo] [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration registrodepresenca.demo.DemoApplication for test class registrodepresenca.demo.repository.CartaoRepositoryTest
+2026-11-02T04:37:43.867-03:00  INFO 162536 --- [demo] [    Test worker] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [registrodepresenca.demo.repository.CartaoRepositoryTest]: CartaoRepositoryTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-11-02T04:37:43.868-03:00  INFO 162536 --- [demo] [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration registrodepresenca.demo.DemoApplication for test class registrodepresenca.demo.repository.CartaoRepositoryTest
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

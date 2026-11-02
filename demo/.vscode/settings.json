@@ -1,0 +1,10 @@
+{
+  "java.configuration.runtimes": [
+    {
+      "name": "JavaSE-21",
+      "path": "/home/_jambrolhas/.local/share/jdks/temurin-21",
+      "default": true
+    }
+  ],
+  "java.import.gradle.java.home": "/home/_jambrolhas/.local/share/jdks/temurin-21"
+}
