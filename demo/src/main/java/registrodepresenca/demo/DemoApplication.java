@@ -1,4 +1,4 @@
-package registrodepresenca.backend;
+package registrodepresenca.demo;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
