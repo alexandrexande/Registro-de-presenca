@@ -1,4 +1,4 @@
-package registrodepresenca.demo.repository;
+package registrodepresenca.backend.repository;
 
 import static org.junit.jupiter.api.Assertions.*;
 
