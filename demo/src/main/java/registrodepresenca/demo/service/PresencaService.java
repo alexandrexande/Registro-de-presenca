@@ -7,12 +7,12 @@ import java.time.ZoneId;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import registrodepresenca.demo.classes.Aluno;
-import registrodepresenca.demo.classes.Cartao;
-import registrodepresenca.demo.classes.Presenca;
-import registrodepresenca.demo.repository.AlunoRepository;
-import registrodepresenca.demo.repository.CartaoRepository;
-import registrodepresenca.demo.repository.PresencaRepository;
+import registrodepresenca.backend.entity.Aluno;
+import registrodepresenca.backend.entity.Cartao;
+import registrodepresenca.backend.entity.Presenca;
+import registrodepresenca.backend.repository.AlunoRepository;
+import registrodepresenca.backend.repository.CartaoRepository;
+import registrodepresenca.backend.repository.PresencaRepository;
 
 @Service
 public class PresencaService {
