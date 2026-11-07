@@ -1,4 +1,4 @@
-package registrodepresenca.demo.service;
+package registrodepresenca.backend.service;
 
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
