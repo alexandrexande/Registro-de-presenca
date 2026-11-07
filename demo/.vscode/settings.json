@@ -1,0 +1,17 @@
+{
+    "java.configuration.runtimes": [
+        {
+            "name": "JavaSE-21",
+            "path": "/home/_jambrolhas/.local/share/jdks/temurin-21",
+            "default": true
+        }
+    ],
+    "java.import.gradle.java.home": "/home/_jambrolhas/.local/share/jdks/temurin-21",
+    "[java]": {
+        "editor.defaultFormatter": "redhat.java",
+        "editor.formatOnSave": true,
+        "editor.insertSpaces": true,
+        "editor.tabSize": 4,
+        "editor.detectIndentation": false
+    }
+}
