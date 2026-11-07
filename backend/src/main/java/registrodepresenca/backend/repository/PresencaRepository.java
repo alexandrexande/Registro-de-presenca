@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import registrodepresenca.demo.classes.Presenca;
+import registrodepresenca.backend.entity.Presenca;
 
 public interface PresencaRepository extends JpaRepository<Presenca, Integer> {
 

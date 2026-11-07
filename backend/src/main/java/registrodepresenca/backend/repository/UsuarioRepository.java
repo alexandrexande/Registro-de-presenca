@@ -1,8 +1,8 @@
-package registrodepresenca.demo.repository;
+package registrodepresenca.backend.repository;
 
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
-import registrodepresenca.demo.classes.Usuario;
+import registrodepresenca.backend.entity.Usuario;
 
 public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
 

@@ -1,8 +1,8 @@
-package registrodepresenca.demo.repository;
+package registrodepresenca.backend.repository;
 
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
-import registrodepresenca.demo.classes.Cartao;
+import registrodepresenca.backend.entity.Cartao;
 
 public interface CartaoRepository extends JpaRepository<Cartao, Integer> {
 
