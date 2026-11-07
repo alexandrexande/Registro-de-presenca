@@ -1,4 +1,4 @@
-package registrodepresenca.demo.repository;
+package registrodepresenca.backend.repository;
 
 import java.time.OffsetDateTime;
 import java.util.List;

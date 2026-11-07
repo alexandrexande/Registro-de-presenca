@@ -1,4 +1,4 @@
-package registrodepresenca.demo.classes;
+package registrodepresenca.backend.entity;
 
 import java.time.LocalDateTime;
 
