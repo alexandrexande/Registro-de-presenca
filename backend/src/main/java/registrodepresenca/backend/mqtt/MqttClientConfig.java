@@ -1,4 +1,3 @@
-
 package registrodepresenca.backend.mqtt;
 
 import com.hivemq.client.mqtt.MqttClient;
@@ -59,7 +58,6 @@ public class MqttClientConfig {
                 .automaticReconnectWithDefaultConfig()
                 .buildAsync();
 
-        // Disponibiliza o cliente para publicação
         publisher.definirCliente(client);
 
         client.connectWith()

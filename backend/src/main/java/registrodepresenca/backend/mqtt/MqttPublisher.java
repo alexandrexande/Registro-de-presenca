@@ -1,4 +1,3 @@
-
 package registrodepresenca.backend.mqtt;
 
 import com.hivemq.client.mqtt.datatypes.MqttQos;

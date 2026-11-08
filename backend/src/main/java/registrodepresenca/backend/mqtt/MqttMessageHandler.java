@@ -1,4 +1,3 @@
-
 package registrodepresenca.backend.mqtt;
 
 import tools.jackson.databind.JsonNode;
