@@ -33,25 +33,30 @@ public class PresencaService {
     @Transactional
     public Resultado registrarLeitura(String uid) {
         if (uid == null || uid.isBlank()) {
-            return negada("UID não informado");
+            return negada("INVALIDA", "UID não informado");
         }
 
         Cartao cartao = cartaoRepository.findByUid(uid.trim()).orElse(null);
         if (cartao == null) {
-            return negada("Cartao naoo cadastrado");
+            return negada("DESCONHECIDO", "Cartao naoo cadastrado");
         }
         if (cartao.situacao == null || !"ATIVO".equalsIgnoreCase(cartao.situacao.trim())) {
-            return negada("Cartao não  ativo");
+            return negada("BLOQUEADO", "Cartao não  ativo");
         }
 
-        Aluno aluno = alunoRepository.findById(cartao.matricula_aluno).orElse(null);
+        Aluno aluno = alunoRepository.buscarParaAtualizar(cartao.matricula_aluno).orElse(null);
         if (aluno == null) {
-            return negada("Alugo nao encontrado");
+            return negada("ALUNO_INEXISTENTE", "Alugo nao encontrado");
         }
 
-        ZoneId fuso = ZoneId.systemDefault();
+        ZoneId fuso = ZoneId.of("America/Maceio");
 
         OffsetDateTime agora = OffsetDateTime.now(fuso);
+
+        if (presencaRepository.existeNoIntervalo(
+                aluno.matricula_aluno, agora.minusSeconds(30), agora.plusNanos(1))) {
+            return negada("DUPLICADA", "Leitura repetida em menos de 30 segundos");
+        }
 
         LocalDate hoje = agora.toLocalDate();
 
@@ -83,8 +88,8 @@ public class PresencaService {
         return new Resultado(true, situacao, mensagem, aluno.nome_aluno, agora);
     }
 
-    private Resultado negada(String mensagem) {
-        return new Resultado(false, "NEGADA", mensagem, null, null);
+    private Resultado negada(String situacao, String mensagem) {
+        return new Resultado(false, situacao, mensagem, null, null);
     }
 
     public record Resultado(
