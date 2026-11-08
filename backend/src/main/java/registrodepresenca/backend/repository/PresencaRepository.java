@@ -28,4 +28,17 @@ public interface PresencaRepository extends JpaRepository<Presenca, Integer> {
     List<Presenca> buscarPorAlunoNoPeriodo(@Param("matricula") int matricula,
                                            @Param("inicio") OffsetDateTime inicio,
                                            @Param("fim") OffsetDateTime fim);
+
+    @Query("""
+           SELECT p FROM Presenca p, Aluno a
+           WHERE p.matricula_aluno = a.matricula_aluno
+             AND a.id_turma = :turma
+             AND p.data_hora >= :inicio
+             AND p.data_hora < :fim
+           ORDER BY p.data_hora
+           """)
+    List<Presenca> buscarPorTurmaNoDia(
+            @Param("turma") int turma,
+            @Param("inicio") OffsetDateTime inicio,
+            @Param("fim") OffsetDateTime fim);
 }
