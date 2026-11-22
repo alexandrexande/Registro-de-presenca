@@ -24,6 +24,19 @@ public interface PresencaRepository extends JpaRepository<Presenca, Integer> {
                               @Param("fim") OffsetDateTime fim);
 
     @Query("""
+           SELECT CASE WHEN COUNT(p) > 0 THEN true ELSE false END
+           FROM Presenca p
+           WHERE p.matricula_aluno = :matricula
+             AND p.numero_aula = :aula
+             AND p.data_hora >= :inicio
+             AND p.data_hora < :fim
+           """)
+    boolean existeNaAula(@Param("matricula") int matricula,
+                         @Param("aula") int aula,
+                         @Param("inicio") OffsetDateTime inicio,
+                         @Param("fim") OffsetDateTime fim);
+
+    @Query("""
            SELECT p FROM Presenca p
            WHERE p.matricula_aluno = :matricula
              AND p.data_hora BETWEEN :inicio AND :fim
