@@ -9,6 +9,9 @@ import registrodepresenca.backend.entity.Presenca;
 
 public interface PresencaRepository extends JpaRepository<Presenca, Integer> {
 
+    @Query("SELECT MAX(p.data_hora) FROM Presenca p WHERE p.id_cartao = :cartao")
+    OffsetDateTime ultimaLeituraGravada(@Param("cartao") int cartao);
+
     @Query("""
            SELECT CASE WHEN COUNT(p) > 0 THEN true ELSE false END
            FROM Presenca p

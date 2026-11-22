@@ -53,9 +53,11 @@ public class PresencaService {
 
         OffsetDateTime agora = OffsetDateTime.now(fuso);
 
-        if (presencaRepository.existeNoIntervalo(
-                aluno.matricula_aluno, agora.minusSeconds(30), agora.plusNanos(1))) {
-            return negada("DUPLICADA", "Leitura repetida em menos de 30 segundos");
+        OffsetDateTime limite = agora.minusMinutes(45);
+        OffsetDateTime ultimaPresenca = presencaRepository.ultimaLeituraGravada(cartao.id_cartao);
+        if ((ultimaPresenca != null && ultimaPresenca.isAfter(limite))
+                || (aluno.horasaida != null && aluno.horasaida.isAfter(limite.toLocalDateTime()))) {
+            return negada("DUPLICADA", "Aguarde 45 minutos entre leituras do cartão");
         }
 
         LocalDate hoje = agora.toLocalDate();
@@ -68,16 +70,16 @@ public class PresencaService {
                 presencaRepository.existeNoIntervalo(aluno.matricula_aluno, inicio, fim);
         String situacao = jaEntrouHoje ? "SAIDA" : "ENTRADA";
 
-        Presenca presenca = new Presenca();
-        presenca.matricula_aluno = aluno.matricula_aluno;
-        presenca.id_cartao = cartao.id_cartao;
-        presenca.data_hora = agora;
-        presenca.situacao = situacao;
-        presencaRepository.save(presenca);
-
         if (jaEntrouHoje) {
             aluno.horasaida = agora.toLocalDateTime();
         } else {
+            Presenca presenca = new Presenca();
+            presenca.matricula_aluno = aluno.matricula_aluno;
+            presenca.id_cartao = cartao.id_cartao;
+            presenca.data_hora = agora;
+            presenca.situacao = situacao;
+            presencaRepository.save(presenca);
+
             aluno.horaentrada = agora.toLocalDateTime();
             aluno.horasaida = null;
         }

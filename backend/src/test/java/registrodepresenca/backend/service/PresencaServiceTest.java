@@ -78,7 +78,7 @@ class PresencaServiceTest {
     @Test
     void duplicadaNaoGravaNemMudaHorarios() {
         Aluno aluno = alunoComCartao("ATIVO");
-        when(presencas.existeNoIntervalo(eq(2026001), any(), any())).thenReturn(true);
+        when(presencas.ultimaLeituraGravada(10)).thenReturn(OffsetDateTime.now().minusMinutes(44));
         var resultado = service.registrarLeitura("ABC123");
         assertFalse(resultado.aceita());
         assertEquals("DUPLICADA", resultado.situacao());
@@ -86,22 +86,25 @@ class PresencaServiceTest {
         assertNull(aluno.horasaida);
         verify(presencas, never()).save(any(Presenca.class));
         verify(alunos, never()).save(any(Aluno.class));
-        verify(presencas).existeNoIntervalo(eq(2026001), argThat(inicio ->
-                inicio.isAfter(OffsetDateTime.now().minusSeconds(35))), any());
     }
 
     @Test
     void leituraPosteriorRegistraSaidaPreservandoEntrada() {
         Aluno aluno = alunoComCartao("ATIVO");
-        var entrada = OffsetDateTime.now().minusHours(1).toLocalDateTime();
-        aluno.horaentrada = entrada;
-        when(presencas.existeNoIntervalo(eq(2026001), any(), any())).thenReturn(false, true);
+        var entrada = OffsetDateTime.now().minusMinutes(45);
+        aluno.horaentrada = entrada.toLocalDateTime();
+        when(presencas.ultimaLeituraGravada(10)).thenReturn(entrada);
+        when(presencas.existeNoIntervalo(eq(2026001), any(), any())).thenReturn(true);
         var resultado = service.registrarLeitura("ABC123");
         assertTrue(resultado.aceita());
         assertEquals("SAIDA", resultado.situacao());
-        assertEquals(entrada, aluno.horaentrada);
+        assertEquals(entrada.toLocalDateTime(), aluno.horaentrada);
         assertNotNull(aluno.horasaida);
-        verify(presencas).save(argThat(p -> "SAIDA".equals(p.situacao)));
+        var saida = aluno.horasaida;
+        assertEquals("DUPLICADA", service.registrarLeitura("ABC123").situacao());
+        assertEquals(saida, aluno.horasaida);
+        verify(presencas, never()).save(any(Presenca.class));
+        verify(alunos).save(aluno);
     }
 
     @Test

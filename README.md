@@ -89,8 +89,8 @@ Retorna os dados do cartão. Se não existir, retorna `404`.
 ```
 
 - Primeira leitura aceita do dia: `ENTRADA`.
-- Repetir em menos de 30 segundos: `DUPLICADA`, sem gravar outra presença.
-- Nova leitura depois do intervalo: `SAIDA`.
+- Repetir em menos de 45 minutos desde a última leitura aceita: `DUPLICADA`, sem alterar os horários. O intervalo também vale na virada do dia.
+- A partir de 45 minutos, outra leitura no mesmo dia retorna `SAIDA` e atualiza `ALUNO.horasaida`. A entrada continua sendo a única linha do dia em `PRESENCA` para esse aluno.
 - Cartão inexistente: `DESCONHECIDO`.
 - Cartão que não está ativo: `BLOQUEADO`.
 
