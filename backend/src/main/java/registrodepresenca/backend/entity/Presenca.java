@@ -14,4 +14,6 @@ public class Presenca{
     public int id_cartao;
     public OffsetDateTime data_hora;
     public String situacao;
+    // Aula em que a leitura foi feita. Nulo nas presenças antigas, de antes da grade de aulas
+    public Integer numero_aula;
 }

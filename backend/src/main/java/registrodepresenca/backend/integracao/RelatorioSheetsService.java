@@ -32,9 +32,11 @@ import com.google.api.services.sheets.v4.model.UpdateSheetPropertiesRequest;
 import com.google.api.services.sheets.v4.model.ValueRange;
  
 import registrodepresenca.backend.entity.Aluno;
+import registrodepresenca.backend.entity.Aula;
 import registrodepresenca.backend.entity.Presenca;
 import registrodepresenca.backend.entity.Turma;
 import registrodepresenca.backend.repository.AlunoRepository;
+import registrodepresenca.backend.repository.AulaRepository;
 import registrodepresenca.backend.repository.PresencaRepository;
 import registrodepresenca.backend.repository.TurmaRepository;
 
@@ -50,24 +52,33 @@ public class RelatorioSheetsService {
     private final TurmaRepository turmaRepository;
     private final AlunoRepository alunoRepository;
     private final PresencaRepository presencaRepository;
+    private final AulaRepository aulaRepository;
 
     @Value("${google.sheets.spreadsheet-id}")
     private String idPlanilha;
+
+    @Value("${google.credentials.path:}")
+    private String caminhoCredencial;
 
     public RelatorioSheetsService(
         Sheets sheets,
         TurmaRepository turmaRepository,
         AlunoRepository alunoRepository,
-        PresencaRepository presencaRepository){
+        PresencaRepository presencaRepository,
+        AulaRepository aulaRepository){
             this.sheets = sheets;
             this.turmaRepository = turmaRepository;
             this.alunoRepository = alunoRepository;
             this.presencaRepository = presencaRepository;
+            this.aulaRepository = aulaRepository;
     }
 
     public record ResultadoRelatorio(String mes, List<String> abas, int abasCriadas, int turmasSemAlunos, String planilha){}
 
     public synchronized ResultadoRelatorio gerarMensal(YearMonth mes) throws IOException{
+        if(caminhoCredencial == null || caminhoCredencial.isBlank()){
+            throw new IOException("as credenciais do Google não estão configuradas (defina GOOGLE_CREDENTIALS_PATH com o caminho do arquivo .json)");
+        }
         String mesTexto = String.format("%02d/%d", mes.getMonthValue(), mes.getYear());
         String link = "https://docs.google.com/spreadsheets/d/" + idPlanilha;
 
@@ -80,6 +91,8 @@ public class RelatorioSheetsService {
 
         //Monta em memória a tabela para cada turma
         Map<String, List<List<Object>>> tabelas = new LinkedHashMap<>();
+
+        List<Aula> grade = aulaRepository.listarEmOrdem();
 
         for(Turma turma : turmas){
             List<Aluno> alunos = alunosPorTurma.get(turma.id_turma);
@@ -94,7 +107,7 @@ public class RelatorioSheetsService {
             linhas.add(List.of("Turma: " + vazioSeNulo(turma.nome) + " " + vazioSeNulo(turma.turma) + " (" + turma.ano + ") - " + mesTexto));
             linhas.add(List.of("Gerado em: " + geradoEm));
             linhas.add(List.of(""));
-            linhas.addAll(MontadorRelatorioMensal.montar(alunos, presencas, mes, FUSO));
+            linhas.addAll(MontadorRelatorioMensal.montar(alunos, presencas, mes, FUSO, grade));
 
             tabelas.put(nomeDaAba(turma), linhas);
         }
@@ -159,12 +172,14 @@ public class RelatorioSheetsService {
                         .setGridProperties(new GridProperties()
                                 .setRowCount(Math.max(linhas.size() + 10, 30))
                                 .setColumnCount(Math.max(totalColunas + 2, 10))
-                                .setFrozenRowCount(LINHAS_DO_TOPO + 1)//LINHAS_DE_TOPO
+                                .setFrozenRowCount(LINHAS_DO_TOPO + MontadorRelatorioMensal.LINHAS_DE_CABECALHO)
                                 .setFrozenColumnCount(2)))
                 .setFields("gridProperties(rowCount,columnCount,frozenRowCount,frozenColumnCount)")));
 
             pedidos.add(negrito(sheetId, 0, 1));                            //Título
-            pedidos.add(negrito(sheetId, LINHAS_DO_TOPO, totalColunas));    //Cabeçalho da tabela
+            for(int i = 0; i < MontadorRelatorioMensal.LINHAS_DE_CABECALHO; i++){
+                pedidos.add(negrito(sheetId, LINHAS_DO_TOPO + i, totalColunas));    //Cabeçalho da tabela: dia, aula e horário
+            }
         }
 
         sheets.spreadsheets().batchUpdate(idPlanilha, new BatchUpdateSpreadsheetRequest().setRequests(pedidos)).execute();
