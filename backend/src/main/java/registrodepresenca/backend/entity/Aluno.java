@@ -1,7 +1,5 @@
 package registrodepresenca.backend.entity;
 
-import java.time.LocalDateTime;
-
 import jakarta.persistence.*;
 
 @Entity
@@ -12,6 +10,4 @@ public class Aluno{
     public int id_turma;
     public String nome_aluno;
     public String uid;
-    public LocalDateTime horaentrada;
-    public LocalDateTime horasaida;
 }

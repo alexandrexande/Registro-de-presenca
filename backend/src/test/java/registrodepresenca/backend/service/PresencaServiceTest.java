@@ -44,15 +44,11 @@ class PresencaServiceTest {
     }
 
     @Test
-    void registraPresenteEPreservaHorariosAnteriores() {
-        Aluno aluno = alunoComCartao("ATIVO");
-        var saidaAnterior = OffsetDateTime.now().minusDays(1).toLocalDateTime();
-        aluno.horasaida = saidaAnterior;
+    void registraPresenteSemAlterarCadastroDoAluno() {
+        alunoComCartao("ATIVO");
         var resultado = service.registrarLeitura(" ABC123 ");
         assertTrue(resultado.aceita());
         assertEquals("PRESENTE", resultado.situacao());
-        assertNull(aluno.horaentrada);
-        assertEquals(saidaAnterior, aluno.horasaida);
         verify(presencas).save(argThat(p -> p.matricula_aluno == 2026001
                 && p.id_cartao == 10 && "PRESENTE".equals(p.situacao) && p.data_hora != null));
         verify(alunos, never()).save(any());
@@ -77,28 +73,25 @@ class PresencaServiceTest {
     }
 
     @Test
-    void duplicadaNaoGravaNemMudaHorarios() {
-        Aluno aluno = alunoComCartao("ATIVO");
+    void duplicadaNaoGrava() {
+        alunoComCartao("ATIVO");
         when(presencas.ultimaLeituraGravada(10)).thenReturn(OffsetDateTime.now().minusMinutes(44));
         var resultado = service.registrarLeitura("ABC123");
         assertFalse(resultado.aceita());
         assertEquals("DUPLICADA", resultado.situacao());
-        assertNull(aluno.horaentrada);
-        assertNull(aluno.horasaida);
         verify(presencas, never()).save(any(Presenca.class));
         verify(alunos, never()).save(any(Aluno.class));
     }
 
     @Test
     void segundaLeituraDoDiaContinuaDuplicadaApos45Minutos() {
-        Aluno aluno = alunoComCartao("ATIVO");
+        alunoComCartao("ATIVO");
         var entrada = OffsetDateTime.now().minusMinutes(45);
         when(presencas.ultimaLeituraGravada(10)).thenReturn(entrada);
         when(presencas.existeNoIntervalo(eq(2026001), any(), any())).thenReturn(true);
         var resultado = service.registrarLeitura("ABC123");
         assertFalse(resultado.aceita());
         assertEquals("DUPLICADA", resultado.situacao());
-        assertNull(aluno.horasaida);
         verify(presencas, never()).save(any(Presenca.class));
         verify(alunos, never()).save(any());
     }
