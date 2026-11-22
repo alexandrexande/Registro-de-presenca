@@ -44,17 +44,18 @@ class PresencaServiceTest {
     }
 
     @Test
-    void registraEntradaELimpaSaidaAnterior() {
+    void registraPresenteEPreservaHorariosAnteriores() {
         Aluno aluno = alunoComCartao("ATIVO");
-        aluno.horasaida = OffsetDateTime.now().minusDays(1).toLocalDateTime();
+        var saidaAnterior = OffsetDateTime.now().minusDays(1).toLocalDateTime();
+        aluno.horasaida = saidaAnterior;
         var resultado = service.registrarLeitura(" ABC123 ");
         assertTrue(resultado.aceita());
-        assertEquals("ENTRADA", resultado.situacao());
-        assertNotNull(aluno.horaentrada);
-        assertNull(aluno.horasaida);
+        assertEquals("PRESENTE", resultado.situacao());
+        assertNull(aluno.horaentrada);
+        assertEquals(saidaAnterior, aluno.horasaida);
         verify(presencas).save(argThat(p -> p.matricula_aluno == 2026001
-                && p.id_cartao == 10 && "ENTRADA".equals(p.situacao) && p.data_hora != null));
-        verify(alunos).save(aluno);
+                && p.id_cartao == 10 && "PRESENTE".equals(p.situacao) && p.data_hora != null));
+        verify(alunos, never()).save(any());
     }
 
     @Test
@@ -89,22 +90,17 @@ class PresencaServiceTest {
     }
 
     @Test
-    void leituraPosteriorRegistraSaidaPreservandoEntrada() {
+    void segundaLeituraDoDiaContinuaDuplicadaApos45Minutos() {
         Aluno aluno = alunoComCartao("ATIVO");
         var entrada = OffsetDateTime.now().minusMinutes(45);
-        aluno.horaentrada = entrada.toLocalDateTime();
         when(presencas.ultimaLeituraGravada(10)).thenReturn(entrada);
         when(presencas.existeNoIntervalo(eq(2026001), any(), any())).thenReturn(true);
         var resultado = service.registrarLeitura("ABC123");
-        assertTrue(resultado.aceita());
-        assertEquals("SAIDA", resultado.situacao());
-        assertEquals(entrada.toLocalDateTime(), aluno.horaentrada);
-        assertNotNull(aluno.horasaida);
-        var saida = aluno.horasaida;
-        assertEquals("DUPLICADA", service.registrarLeitura("ABC123").situacao());
-        assertEquals(saida, aluno.horasaida);
+        assertFalse(resultado.aceita());
+        assertEquals("DUPLICADA", resultado.situacao());
+        assertNull(aluno.horasaida);
         verify(presencas, never()).save(any(Presenca.class));
-        verify(alunos).save(aluno);
+        verify(alunos, never()).save(any());
     }
 
     @Test

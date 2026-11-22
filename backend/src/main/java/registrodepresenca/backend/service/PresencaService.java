@@ -55,8 +55,7 @@ public class PresencaService {
 
         OffsetDateTime limite = agora.minusMinutes(45);
         OffsetDateTime ultimaPresenca = presencaRepository.ultimaLeituraGravada(cartao.id_cartao);
-        if ((ultimaPresenca != null && ultimaPresenca.isAfter(limite))
-                || (aluno.horasaida != null && aluno.horasaida.isAfter(limite.toLocalDateTime()))) {
+        if (ultimaPresenca != null && ultimaPresenca.isAfter(limite)) {
             return negada("DUPLICADA", "Aguarde 45 minutos entre leituras do cartão");
         }
 
@@ -66,28 +65,17 @@ public class PresencaService {
 
         OffsetDateTime fim = hoje.plusDays(1).atStartOfDay(fuso).toOffsetDateTime();
 
-        boolean jaEntrouHoje =
-                presencaRepository.existeNoIntervalo(aluno.matricula_aluno, inicio, fim);
-        String situacao = jaEntrouHoje ? "SAIDA" : "ENTRADA";
-
-        if (jaEntrouHoje) {
-            aluno.horasaida = agora.toLocalDateTime();
-        } else {
-            Presenca presenca = new Presenca();
-            presenca.matricula_aluno = aluno.matricula_aluno;
-            presenca.id_cartao = cartao.id_cartao;
-            presenca.data_hora = agora;
-            presenca.situacao = situacao;
-            presencaRepository.save(presenca);
-
-            aluno.horaentrada = agora.toLocalDateTime();
-            aluno.horasaida = null;
+        if (presencaRepository.existeNoIntervalo(aluno.matricula_aluno, inicio, fim)) {
+            return negada("DUPLICADA", "Presença já registrada hoje");
         }
 
-        alunoRepository.save(aluno);
-
-        String mensagem = jaEntrouHoje ? "Saída registrada" : "Entrada registrada";
-        return new Resultado(true, situacao, mensagem, aluno.nome_aluno, agora);
+        Presenca presenca = new Presenca();
+        presenca.matricula_aluno = aluno.matricula_aluno;
+        presenca.id_cartao = cartao.id_cartao;
+        presenca.data_hora = agora;
+        presenca.situacao = "PRESENTE";
+        presencaRepository.save(presenca);
+        return new Resultado(true, presenca.situacao, "Presença registrada", aluno.nome_aluno, agora);
     }
 
     private Resultado negada(String situacao, String mensagem) {

@@ -28,7 +28,7 @@ public final class MontadorRelatorioMensal {
         TreeSet<Integer> diasLetivos = new TreeSet<>();
 
         for(Presenca p : presencas){
-            if(p.data_hora == null || !ehEntrada(p)){
+            if(p.data_hora == null || !"PRESENTE".equals(p.situacao)){
                 continue;
             }
 
@@ -90,9 +90,6 @@ public final class MontadorRelatorioMensal {
         return tabela;
     }
 
-    private static boolean ehEntrada(Presenca p) {
-        return p.situacao != null && "ENTRADA".equalsIgnoreCase(p.situacao.trim());
-    }
  
     private static String vazioSeNulo(String texto) {
         return texto == null ? "" : texto;
