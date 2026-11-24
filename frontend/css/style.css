@@ -164,11 +164,7 @@ main { max-width: 960px; margin: 0 auto; padding: 28px 20px 64px; }
 
 .resultado { background: var(--papel); border: 1px solid var(--linha); border-radius: 12px; padding: 20px; margin-top: 20px; display: grid; gap: 8px; }
 .resultado a { color: var(--tinta); font-weight: 700; }
-
-.horarios { display: grid; gap: 4px; border-top: 2px solid var(--tinta); }
-.aula-linha { display: grid; grid-template-columns: minmax(140px, 1.4fr) 130px 130px auto; gap: 12px; align-items: end; padding: 14px 4px; border-bottom: 1px solid var(--linha); }
-.aula-linha .erro { grid-column: 1 / -1; min-height: 0; }
-
+ 
 dialog { border: 0; border-radius: 14px; padding: 0; width: min(440px, calc(100vw - 32px)); background: var(--fundo); color: var(--tinta); box-shadow: 0 20px 60px rgba(18, 37, 31, .35); }
 dialog::backdrop { background: rgba(18, 37, 31, .55); }
 dialog form { display: grid; gap: 16px; padding: 24px; }
@@ -180,8 +176,6 @@ dialog .acoes { display: flex; gap: 8px; justify-content: flex-end; }
 #aviso div.ruim { background: var(--erro); }
 
 @media (max-width: 760px) {
-  .aula-linha { grid-template-columns: 1fr 1fr; }
-  .aula-linha .campo:first-child { grid-column: 1 / -1; }
   .hora-aulas { flex-direction: column; align-items: flex-end; gap: 4px; }
   .login { grid-template-columns: 1fr; }
   .login-arte { padding-bottom: 28px; gap: 24px; }

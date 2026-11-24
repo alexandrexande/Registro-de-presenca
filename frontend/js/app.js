@@ -89,7 +89,6 @@
     const [, rota, id] = location.hash.split('/');
     if (rota === 'turma' && id) return telaTurma(Number(id));
     if (rota === 'relatorio') return telaRelatorio();
-    if (rota === 'horarios' && sessao.admin) return telaHorarios();
     return telaTurmas();
   }
   window.addEventListener('hashchange', rotear);
@@ -101,8 +100,7 @@
         h('span', { class: 'nome' }, 'Chamada'),
         h('nav', { 'aria-label': 'Principal' },
           link('#/turmas', 'Turmas', 'turmas'),
-          link('#/relatorio', 'Relatório', 'relatorio'),
-          sessao.admin ? link('#/horarios', 'Horários', 'horarios') : null),
+          link('#/relatorio', 'Relatório', 'relatorio')),
         h('span', { class: 'quem' }, sessao.nome),
         h('button', { class: 'btn', type: 'button', onclick: () => sair() }, 'Sair'))),
       h('main', {}, conteudo));
@@ -372,48 +370,6 @@
     agendar();
   }
 
-  async function telaHorarios() {
-    quadro('horarios', h('p', { class: 'sub' }, 'Carregando horários…'));
-    try {
-      const aulas = await api('/aulas');
-      const minutos = aulas.length ? aulas[0].janelaMinutos : 10;
-
-      const linha = (a) => {
-        const erro = h('p', { class: 'erro', role: 'alert' });
-        const nome = h('input', { id: `n${a.numero}`, value: a.nome, required: true });
-        const inicio = h('input', { id: `i${a.numero}`, type: 'time', value: a.inicio, required: true });
-        const fim = h('input', { id: `f${a.numero}`, type: 'time', value: a.fim, required: true });
-        const botao = h('button', { class: 'btn', type: 'submit' }, 'Salvar');
-        return h('form', {
-          class: 'aula-linha',
-          onsubmit: async (e) => {
-            e.preventDefault();
-            erro.textContent = '';
-            botao.disabled = true;
-            try {
-              const r = await api('/aulas/' + a.numero, { method: 'PUT', corpo: { numero: a.numero, nome: nome.value, inicio: inicio.value, fim: fim.value } });
-              nome.value = r.nome; inicio.value = r.inicio; fim.value = r.fim;
-              avisar(`${r.nome} salva: ${r.inicio}–${r.fim}. O cartão vale a partir das ${r.janelaInicio}.`);
-            } catch (err) {
-              if (err.status !== 401) erro.textContent = err.message;
-            } finally { botao.disabled = false; }
-          },
-        },
-          h('div', { class: 'campo' }, h('label', { for: nome.id }, 'Aula'), nome),
-          h('div', { class: 'campo' }, h('label', { for: inicio.id }, 'Início'), inicio),
-          h('div', { class: 'campo' }, h('label', { for: fim.id }, 'Fim'), fim),
-          botao, erro);
-      };
-
-      quadro('horarios', [
-        h('div', { class: 'cabeca' }, h('div', {}, h('h2', {}, 'Horários das aulas'),
-          h('p', { class: 'sub' }, `A presença é registrada no final de cada aula: o cartão só vale nos últimos ${minutos} minutos. Fora disso, a leitura é recusada. Os horários valem para todas as turmas.`))),
-        aulas.length ? h('div', { class: 'horarios' }, aulas.map(linha))
-          : h('div', { class: 'vazio-tela' }, h('p', {}, 'Nenhuma aula cadastrada. Rode o arquivo banco/grade-de-aulas.sql no banco.'))]);
-    } catch (e) {
-      if (e.status !== 401) quadro('horarios', h('p', { class: 'erro' }, e.message));
-    }
-  }
 
   function telaRelatorio() {
     const saida = h('div');
